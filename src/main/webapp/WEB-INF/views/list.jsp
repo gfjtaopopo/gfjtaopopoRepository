@@ -60,11 +60,11 @@
 							<th>
 								<button class="btn btn-primary btn-sm">
 									<span class="glyphicon glyphicon-pencil" aria-hidden="true">
-									编辑
+									编辑</span>
 								</button>
 								<button class="btn btn-danger btn-sm">
 									<span class="glyphicon glyphicon-trash" aria-hidden="true">
-									删除
+									删除</span>
 								</button>
 							</th>
 						</tr>
