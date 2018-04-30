@@ -264,8 +264,21 @@
 			$("#page_nav_area").append(navEle);
 		}
 		
+		// 清除表单内容和样式
+		function reset_form(ele){
+			// 表单内容
+			$(ele)[0].reset();
+			// 表单样式
+			$(ele).find("*").removeClass("has-error has-success");
+			$(ele).find(".help-block").text("");
+			
+		}
+		
 		// 点击新增按钮弹出模态框
 		$("#emp_add_modal_btn").click(function(){
+			
+			// 清除表单数据(表单完整重置(表单数据,表单样式))
+			reset_form("#empAddModal form");
 			
 			// 发出Ajax请求,查出部门信息,显示在下拉列表中
 			getDepts();
@@ -301,10 +314,10 @@
 		function validate_add_form(){
 			// 1,校验用户名
 			var empName = $("#empName_add_input").val();
-			var regName = /(^[a-zA-Z0-9_-]{6,16}$)|(^[\u2E80-\u9FFF]{2,6}$)/;
+			var regName = /(^[a-zA-Z0-9_-]{3,16}$)|(^[\u2E80-\u9FFF]{2,6}$)/;
 			if(!regName.test(empName)) {
 				// .has-warning、.has-error 或 .has-success
-				show_validate_msg("#empName_add_input","has-error","用户名:2-6位中文 或者 6-16位英文和数字的组合")
+				show_validate_msg("#empName_add_input","has-error","员工名:2-6位中文 或者 3-16位英文和数字的组合")
 				
 				return false;
 			} else {
@@ -331,11 +344,36 @@
 			$(ele).parent().addClass(status);
 			$(ele).next("span").text(msg);
 		}
+		
+		// 校验用户名是否可用
+		$("#empName_add_input").change(function(){
+			// 发送Ajax请求校验用户名是否可用
+			empName = this.value;
+			$.ajax({
+				url:"${APP_PATH}/checkuser",
+				type:"POST",
+				data:"empName=" + empName,
+				success:function(result){
+					if(result.code == 100) {
+						show_validate_msg("#empName_add_input","has-success","用户名可用");
+						$("#emp_save_btn").attr("ajax-va","success");
+					} else {
+						show_validate_msg("#empName_add_input","has-error",result.extend.va_msg);
+						$("#emp_save_btn").attr("ajax-va","error");
+					}
+				}
+			});
+		});
 
 		// 1,模态框中填写的表单数据提交给服务器进行保存
 		$("#emp_save_btn").click(function(){
-			// 2,对提交给服务器的数据进行校验
+			// 1,对提交给服务器的数据进行校验
 			if(!validate_add_form()){
+				return	false;
+			}
+
+			// 2,判断之前的ajax用户名校验是否成功.如果成功
+			if($(this).attr("ajax-va") == "error") {
 				return	false;
 			}
 			
@@ -345,13 +383,28 @@
 				type:"POST",
 				data:$("#empAddModal form").serialize(),
 				success:function(result){
-					// alert(result.msg);
-					// 员工保存成功
-					// 1,关闭模态框
-					$('#empAddModal').modal('hide');
 					
-					// 2,来到最后一页,查看保存的数据
-					to_page(totalRecord);
+					// 后端校验成功(JSR303校验)
+					if(result.code == 100) {
+						// 员工保存成功
+						// 1,关闭模态框
+						$('#empAddModal').modal('hide');
+						
+						// 2,来到最后一页,查看保存的数据
+						to_page(totalRecord);
+					
+					// 显示失败信息
+					} else {
+						if(undefined != result.extend.errorFields.empName) {
+							// 显示名字错误信息
+							show_validate_msg("#empName_add_input","has-error",result.extend.errorFields.empName);
+						}
+						if(undefined != result.extend.errorFields.email) {
+							// 显示邮箱错误信息
+							show_validate_msg("#email_add_input","has-error",result.extend.errorFields.email);
+						}
+						//console.log(result)
+					}
 				}
 			});
 		});

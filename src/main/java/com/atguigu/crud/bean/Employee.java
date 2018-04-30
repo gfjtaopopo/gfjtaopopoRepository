@@ -1,12 +1,17 @@
 package com.atguigu.crud.bean;
 
+import javax.validation.constraints.Pattern;
+
 public class Employee {
     private Integer empId;
 
+    @Pattern(regexp=AirConstants.EMP_NAME_REGEX,message=AirConstants.EMP_NAME_ERR_MSG)
     private String empName;
 
     private String gender;
 
+    // @Email
+    @Pattern(regexp=AirConstants.EMAIL_REGEX,message=AirConstants.EMAIL_ERR_MSG)
     private String email;
 
     private Integer dId;
