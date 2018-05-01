@@ -19,7 +19,13 @@ public class Employee {
     // 希望查询员工的同时部门信息也是查询好的
     private Department department;
     
-    public Employee() {
+    @Override
+	public String toString() {
+		return "Employee [empId=" + empId + ", empName=" + empName + ", gender=" + gender + ", email=" + email
+				+ ", dId=" + dId + ", department=" + department + "]";
+	}
+
+	public Employee() {
 		super();
 	}
 

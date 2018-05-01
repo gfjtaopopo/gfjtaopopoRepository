@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +42,61 @@ public class EmployeeController {
 	 * /emp/{id}	PUT		修改员工
 	 * /emp/{id}	DELETE	删除员工
 	 */
+	
+	/**
+	 * 删除单个员工
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value="/emp/{empId}",method=RequestMethod.DELETE)
+	@ResponseBody
+	public Msg deleteEmpById(@PathVariable("empId")Integer empId) {
+		employeeService.delEmp(empId);
+		return Msg.success();
+	}
+	
+	/**
+	 * 我们要能支持直接发送PUT之类的请求还要封装请求体中的数据
+	 * 1,配置上HttpPutFormContentFilter---web.xml
+	 * 		:将请求体中的数据解析包装成一个MAP
+	 * 2,request被重新包装,request.getParameter()被重写,就会从自己封装的MAP中取数据
+	 * 员工更新方法
+	 * @param employee
+	 * @return
+	 */
+	@RequestMapping(value="/emp/{empId}",method=RequestMethod.PUT)
+	@ResponseBody
+//	public Msg updateEmp(@Valid Employee employee, BindingResult result) {
+	public Msg updateEmp(Employee employee) {
+		
+//		public Msg saveEmp(@Valid Employee employee, BindingResult result) {
+		// 校验失败,返回失败,在模态框中显示校验失败的错误信息
+//		if(result.hasErrors()) {
+//			Map<String, Object> map = new HashMap<String, Object>();
+//			
+//			List<FieldError> errors = result.getFieldErrors();
+//			for (FieldError fieldError : errors) {
+//				map.put(fieldError.getField(), fieldError.getDefaultMessage());
+//			}
+//			return Msg.fail().add("errorFields", map);
+//		} else {
+			
+			employeeService.updateEmp(employee);
+			return Msg.success();
+//		}
+	}
+	
+	/**
+	 * 按照员工id查询员工信息(更新用)
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value="/emp/{id}",method=RequestMethod.GET)
+	@ResponseBody
+	public Msg getEmp(@PathVariable("id")Integer id) {
+		Employee employee = employeeService.getEmp(id);
+		return Msg.success().add("emp", employee);
+	}
 	
 	/**
 	 * 检查用户名是否可用
@@ -79,8 +135,6 @@ public class EmployeeController {
 			
 			List<FieldError> errors = result.getFieldErrors();
 			for (FieldError fieldError : errors) {
-				System.out.println("错误字段名:" + fieldError.getField());
-				System.out.println("错误信息:" + fieldError.getDefaultMessage());
 				map.put(fieldError.getField(), fieldError.getDefaultMessage());
 			}
 			return Msg.fail().add("errorFields", map);
@@ -102,12 +156,12 @@ public class EmployeeController {
 		// 这不是一个分页查询；
 		// 引入PageHelper分页插件
 		// 在查询之前只需调用，传入页码，以及每页的大小
-		PageHelper.startPage(pn, 5);
+		PageHelper.startPage(pn, AirConstants.PAGE_SIZE);
 		// startPage后面紧跟的这个查询就是一个分页查询
 		List<Employee> emps =  employeeService.getAll();
 		// 使用PageInfo包装查询后的结果，只需要将PageInfo交给页面就行了。
 		// 封装了详细的分页信息，包括有我们查询出来的数据，传入连续显示的页数。
-		PageInfo page = new PageInfo(emps, 5);
+		PageInfo page = new PageInfo(emps, AirConstants.PAGE_RANGE_SIZE);
 		return Msg.success().add("pageInfo", page);
 	}
 	
@@ -121,12 +175,12 @@ public class EmployeeController {
 		// 这不是一个分页查询；
 		// 引入PageHelper分页插件
 		// 在查询之前只需调用，传入页码，以及每页的大小
-		PageHelper.startPage(pn, 5);
+		PageHelper.startPage(pn, AirConstants.PAGE_SIZE);
 		// startPage后面紧跟的这个查询就是一个分页查询
 		List<Employee> emps =  employeeService.getAll();
 		// 使用PageInfo包装查询后的结果，只需要将PageInfo交给页面就行了。
 		// 封装了详细的分页信息，包括有我们查询出来的数据，传入连续显示的页数。
-		PageInfo page = new PageInfo(emps, 5);
+		PageInfo page = new PageInfo(emps, AirConstants.PAGE_RANGE_SIZE);
 		
 		model.addAttribute("pageInfo", page);
 //		page.getNavigatepageNums();

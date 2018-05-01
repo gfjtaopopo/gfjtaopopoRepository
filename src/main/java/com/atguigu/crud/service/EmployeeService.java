@@ -1,7 +1,5 @@
 package com.atguigu.crud.service;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +46,32 @@ public class EmployeeService {
 		criteria.andEmpNameEqualTo(empName);
 		long count = employeeMapper.countByExample(example);
 		return count == 0;
+	}
+
+	/**
+	 * 按照员工id查询员工
+	 * @param id
+	 * @return
+	 */
+	public Employee getEmp(Integer id) {
+		return employeeMapper.selectByPrimaryKey(id);
+	}
+
+	/**
+	 * 员工更新
+	 * @param employee
+	 */
+	public void updateEmp(Employee employee) {
+		employeeMapper.updateByPrimaryKeySelective(employee);
+	}
+
+	/**
+	 * 删除单个员工
+	 * @param empId
+	 */
+	public void delEmp(Integer empId) {
+		employeeMapper.deleteByPrimaryKey(empId);
+		
 	}
 
 }
