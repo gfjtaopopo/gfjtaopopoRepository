@@ -1,5 +1,6 @@
 package com.atguigu.crud.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,14 +45,31 @@ public class EmployeeController {
 	 */
 	
 	/**
-	 * 删除单个员工
-	 * @param id
+	 * 删除员工(单个批量二合一)
+	 * 单个删除:id1
+	 * 批量删除:id1-id2-id3....
+	 * @param empIds
 	 * @return
 	 */
-	@RequestMapping(value="/emp/{empId}",method=RequestMethod.DELETE)
+	@RequestMapping(value="/emp/{empIds}",method=RequestMethod.DELETE)
 	@ResponseBody
-	public Msg deleteEmpById(@PathVariable("empId")Integer empId) {
-		employeeService.delEmp(empId);
+	public Msg deleteEmpById(@PathVariable("empIds")String empIds) {
+		
+		// 批量删除
+		if(empIds.contains(AirConstants.HAIFUN)) {
+			String[] str_empIds = empIds.split(AirConstants.HAIFUN);
+			List<Integer> del_empIds = new ArrayList<Integer>();
+			// 组装id的集合
+			for (String empId : str_empIds) {
+				del_empIds.add(Integer.valueOf(empId));
+//				del_empIds.add(Integer.parseInt(empId));
+			}
+			employeeService.deleteBatch(del_empIds);
+			
+		// 单个删除(可以合并到批量删除employeeService.deleteBatch中)
+		} else {
+			employeeService.delEmp(Integer.valueOf(empIds));
+		}
 		return Msg.success();
 	}
 	

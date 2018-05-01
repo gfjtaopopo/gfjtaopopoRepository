@@ -74,4 +74,15 @@ public class EmployeeService {
 		
 	}
 
+	/**
+	 * 批量删除员工
+	 * @param empIds
+	 */
+	public void deleteBatch(List<Integer> empIds) {
+		EmployeeExample example = new EmployeeExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andEmpIdIn(empIds);
+		employeeMapper.deleteByExample(example);
+	}
+
 }
