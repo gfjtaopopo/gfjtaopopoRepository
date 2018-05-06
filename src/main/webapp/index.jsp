@@ -152,8 +152,8 @@
 		<div class="row">
 		  <div class="col-md-4 col-md-offset-8">
 			<button class="btn btn-primary" id="emp_add_modal_btn">新增</button>
-			<button class="btn btn-danger" id="emp_delete_all_btn" disabled="disabled">删除</button>
-			<button class="btn btn-default" id="emp_next_page">跳转</button>
+			<button class="btn btn-danger" id="emp_delete_all_btn">删除</button>
+			<button class="btn btn-default" id="emp_next_page" onclick="window.location.href='user/login'">登录</button>
 		  </div>
 		</div>
 		
@@ -207,6 +207,8 @@
 			// 清除全选按钮
 			$("#check_all").prop("checked",false);
 			
+			$('#emp_delete_all_btn').attr("disabled","disabled"); 
+			
 			$.ajax({
 				url:"${APP_PATH}/emps",
 				data:"pn="+pn,
@@ -227,13 +229,13 @@
 			$("#emp_table tbody").empty();
 			var emps = result.extend.pageInfo.list;
 			$.each(emps, function(index, item){
-				var checkBoxTd = $("<td><input type='checkbox' class='check_item' /></td>");
-				var empIdTd = $("<td></td>").append(item.empId);
-				var empNameTd = $("<td></td>").append(item.empName);
-				var genderTd = $("<td></td>").append(item.gender=='M'?"男":"女");
-			//或 var genderTd = $("<td></td>").append(item.gender=="M"?"男":"女");
-				var emailTd = $("<td></td>").append(item.email);
-				var deptNameTd = $("<td></td>").append(item.department.deptName);
+				var checkBoxTd = $("<td style='vertical-align:middle;'><input type='checkbox' class='check_item' /></td>");
+				var empIdTd = $("<td style='vertical-align:middle;'></td>").append(item.empId);
+				var empNameTd = $("<td style='vertical-align:middle;'></td>").append(item.empName);
+				var genderTd = $("<td style='vertical-align:middle;'></td>").append(item.gender=='M'?"男":"女");
+			//或 var genderTd = $("<td style='vertical-align:middle;'></td>").append(item.gender=="M"?"男":"女");
+				var emailTd = $("<td style='vertical-align:middle;'></td>").append(item.email);
+				var deptNameTd = $("<td style='vertical-align:middle;'></td>").append(item.department.deptName);
 
 				// 编辑按钮
 				var editBtn = $("<button></button>").addClass("btn btn-primary btn-sm edit_btn")
@@ -651,14 +653,13 @@
 		});
 		
 		// 页面跳转
-		$("#emp_next_page").click(function(){
-			//alert("跳转页面");
-			//window.location.href="main.jsp";
-		/*	$.ajax({
-				url:"${APP_PATH}/login",
+		/*$("#emp_next_page").click(function(){
+
+			$.ajax({
+				url:"${APP_PATH}/user/gotologin",
 				type:"POST"
-			});*/
-		});
+			});
+		});*/
 	</script>
 	
 </body>
