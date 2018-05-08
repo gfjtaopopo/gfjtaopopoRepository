@@ -3,6 +3,8 @@ package com.atguigu.crud.bean;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.atguigu.crud.utils.AirConstants;
+
 /**
  * 通用的返回类
  * @author taofe

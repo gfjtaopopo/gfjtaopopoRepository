@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.atguigu.crud.bean.AirConstants;
 import com.atguigu.crud.bean.Employee;
 import com.atguigu.crud.bean.Msg;
 import com.atguigu.crud.service.EmployeeService;
+import com.atguigu.crud.utils.AirConstants;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 

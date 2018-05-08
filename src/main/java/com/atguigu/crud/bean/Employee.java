@@ -2,6 +2,8 @@ package com.atguigu.crud.bean;
 
 import javax.validation.constraints.Pattern;
 
+import com.atguigu.crud.utils.AirConstants;
+
 public class Employee {
     private Integer empId;
 
