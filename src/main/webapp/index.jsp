@@ -165,14 +165,14 @@
 		<!-- 按钮 -->
 		<div class="row">
 			<div class="col-md-5 col-md-offset-7">
-
-				<span id="date_input_label" class="glyphicon glyphicon-calendar"></span>
-				<input id="date_input_text" type="text" />
+				
+				<button class="btn btn-default" id="date_input_button" onclick="window.location.href='datetime'">日历控件</button>
+				
+				<input id="date_input_text" type="text"/>
 
 				<button class="btn btn-primary" id="emp_add_modal_btn">新增</button>
 				<button class="btn btn-danger" id="emp_delete_all_btn">删除</button>
-				<button class="btn btn-default" id="emp_next_page"
-					onclick="window.location.href='user/login'">登录</button>
+				<button class="btn btn-default" id="emp_next_page" onclick="window.location.href='user/login'">登录</button>
 			</div>
 		</div>
 
@@ -240,8 +240,7 @@
 		$('#date_input_text').datetimepicker({
 			language:  'fr',
 			format: 'yyyy-mm-dd',
-	    });
-		
+	    });		
 		
 		//常规用法
 		laydate.render({
@@ -712,14 +711,6 @@
 			}
 		});
 		
-		// 页面跳转
-		/*$("#emp_next_page").click(function(){
-
-			$.ajax({
-				url:"${APP_PATH}/user/gotologin",
-				type:"POST"
-			});
-		});*/
 	</script>
 	
 </body>
