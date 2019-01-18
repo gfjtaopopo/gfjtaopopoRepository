@@ -17,9 +17,23 @@
  -->
 <!-- 引入jquery -->
 <script type="text/javascript" src="${APP_PATH}/static/js/jquery-3.3.1.min.js"></script>
-<!-- 引入样式 -->
+
+<!-- 引入样式  -->
 <link href="${APP_PATH}/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="${APP_PATH}/static/bootstrap-3.3.7-dist/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <script src="${APP_PATH}/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script src="${APP_PATH}/static/bootstrap-3.3.7-dist/js/bootstrap-datetimepicker.min.js"></script>
+<script src="${APP_PATH}/static/bootstrap-3.3.7-dist/js/bootstrap-datetimepicker.fr.js"></script>
+
+<!-- layDate 日期与时间组件 -->
+<!-- 官网：https://www.layui.com/laydate/ -->
+<script src="${APP_PATH}/static/laydate/laydate.js"></script>
+
+<!-- 日历控件:基于Bootstrap和jQuery的日历控件和日期选择插件 -->
+<%-- <script type="text/javascript" src="${APP_PATH}/static/jquery-bootstrap-calendar/js/dcalendar.picker.js"></script>
+<link type="text/css" href="${APP_PATH}/static/jquery-bootstrap-calendar/css/dcalendar.picker.css" rel="stylesheet" /> --%>
+<%-- <link rel="stylesheet" href="${APP_PATH}/static/jquery-bootstrap-calendar/css/zzsc.css" type="text/css"/> --%>
+
 </head>
 <body>
 	<!-- 员工修改的模态框Modal -->
@@ -144,28 +158,31 @@
 		<!-- 标题 -->
 		<div class="row">
 			<div class="col-md-12">
-			<h1>SSM-CRUD</h1>
+				<h1>SSM-CRUD</h1>
 			</div>
 		</div>
-		
+
 		<!-- 按钮 -->
 		<div class="row">
-		  <div class="col-md-4 col-md-offset-8">
-			<button class="btn btn-primary" id="emp_add_modal_btn">新增</button>
-			<button class="btn btn-danger" id="emp_delete_all_btn">删除</button>
-			<button class="btn btn-default" id="emp_next_page" onclick="window.location.href='user/login'">登录</button>
-		  </div>
+			<div class="col-md-5 col-md-offset-7">
+
+				<span id="date_input_label" class="glyphicon glyphicon-calendar"></span>
+				<input id="date_input_text" type="text" />
+
+				<button class="btn btn-primary" id="emp_add_modal_btn">新增</button>
+				<button class="btn btn-danger" id="emp_delete_all_btn">删除</button>
+				<button class="btn btn-default" id="emp_next_page"
+					onclick="window.location.href='user/login'">登录</button>
+			</div>
 		</div>
-		
+
 		<!-- 显示表格数据 -->
 		<div class="row">
 			<div class="col-md-12">
 				<table class="table table-hover" id="emp_table">
 					<thead>
 						<tr>
-							<th>
-								<input type="checkbox" id="check_all"/>
-							</th>
+							<th><input type="checkbox" id="check_all" /></th>
 							<th>#</th>
 							<th>empName</th>
 							<th>gender</th>
@@ -175,12 +192,12 @@
 						</tr>
 					</thead>
 					<tbody>
-						
+
 					</tbody>
 				</table>
 			</div>
 		</div>
-			
+
 		<!-- 显示分页信息 -->
 		<div class="row">
 			<!-- 分页文字信息 -->
@@ -188,11 +205,54 @@
 			<!-- 分页条信息 -->
 			<div class="col-md-6" id="page_nav_area"></div>
 		</div>
-	
+
+		<!-- 基于Bootstrap和jQuery的日历控件和日期选择插件 -->
+		<!-- <div class="row">
+			<div class="col-md-6">
+				<h3>日历-calendar</h3>
+				<table id='mycalendar' class='calendar'></table>
+			</div>
+			<div class="col-md-6">
+				<h3>日期选择器-datepicker</h3>
+				<input id='mydatepicker' type='text' />
+				<h3>格式化日期</h3>
+				<input id='mydatepicker2' type='text' />
+			</div>
+		</div> -->
+		<div class="row">
+			<label>中文版</label><input type="text" id="test1">
+			<label>国际版</label><input type="text" id="test1-1">
+		</div>
+		<div class="row">
+		</div>
 	</div>
-	
+
 	<script type="text/javascript">
 	
+		// 日历控件:基于Bootstrap和jQuery的日历控件和日期选择插件
+/* 		$('#mydatepicker').dcalendarpicker();
+		$('#mydatepicker2').dcalendarpicker({
+			format:'yyyy-MM-dd'
+		});
+		$('#mycalendar').dcalendar(); */
+		
+		// 日时控件 bootstrap-datetimepicker
+		$('#date_input_text').datetimepicker({
+			language:  'fr',
+			format: 'yyyy-mm-dd',
+	    });
+		
+		
+		//常规用法
+		laydate.render({
+		  elem: '#test1'
+		});
+		//国际版
+		laydate.render({
+		  elem: '#test1-1'
+		  ,lang: 'en'
+		}); 
+
 		// 总记录数 ,当前页
 		var totalRecord, currentPage;
 		
